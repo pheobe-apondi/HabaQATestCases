@@ -91,38 +91,6 @@ describe ('validateSignUpForm',()=>{
 
     });
 
-      it('returns error if phone number does not have the correct format',()=>{
-
-                //Arrange
-          const formData = {
-               firstName:'Ann',
-               lastName: 'Shiro',
-               phoneNumber: '0765433452',
-               pin: '3002',
-               confirmPin: '3002'
-        }
-
-        //Act
-        const result = validateSignUpForm(formData)
-
-
-         //Assert
-
-        expect(result.valid).toBe(false)
-
-        expect(result.errors.phoneNumber).toBe('Phone number must start with +254')
-
-    });
-
-
-    
-
-
-
-
-
-
-
 })
 
 

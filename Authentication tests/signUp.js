@@ -27,10 +27,6 @@ function validateSignUpForm(data){
   }
 
 
-  if(data.phoneNumber  !== '+254'){
-    errors.phoneNumber = 'Phone number must start with +254'
-  }
-
 
   db.users.push({
     firstName:data.firstName,
