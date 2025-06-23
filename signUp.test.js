@@ -1,6 +1,12 @@
-const {validateSignUpForm} = require ('./signUp')
+const { beforeEach } = require('node:test');
+const {validateSignUpForm} = require ('./signUp');
+const { default: expect } = require('expect');
+const { format } = require('path/posix');
 
 describe ('validateSignUpForm',()=>{
+
+    beforeEach(()=>{
+    })
 
     it('returns true for valid inputs',()=>{
 
@@ -9,6 +15,7 @@ describe ('validateSignUpForm',()=>{
         const formData = {
                firstName:'Alice',
                lastName: 'Ann',
+               phoneNumber: '+254113456787',
                pin: '3002',
                confirmPin: '3002'
         }
@@ -28,6 +35,7 @@ describe ('validateSignUpForm',()=>{
           const formData = {
                firstName:'Alice',
                lastName: 'Ann',
+               phoneNumber: '+254113456787',
                pin: '3002',
                confirmPin: '2003'
 
@@ -47,15 +55,64 @@ describe ('validateSignUpForm',()=>{
           const formData = {
                firstName:'',
                lastName: 'Vendor Name',
+               phoneNumber: '+254113456787',
                pin: '3002',
                confirmPin: '3002'
         }
 
          const result = validateSignUpForm(formData);
           expect (result.valid).toBe(false);
+
           expect(result.errors.firstName).toBe('First Name is required')
 
     })
+
+
+    it('returns error if phone number already in database',()=>{
+
+                //Arrange
+          const formData = {
+               firstName:'Ann',
+               lastName: 'Shiro',
+               phoneNumber: '+2541234567898',
+               pin: '3002',
+               confirmPin: '3002'
+        }
+
+        //Act
+        const result = validateSignUpForm(formData)
+
+
+         //Assert
+
+        expect(result.valid).toBe(false)
+
+        expect(result.errors.phoneNumber).toBe('Phone number is already registered')
+
+    });
+
+      it('returns error if phone number does not have the correct format',()=>{
+
+                //Arrange
+          const formData = {
+               firstName:'Ann',
+               lastName: 'Shiro',
+               phoneNumber: '0765433452',
+               pin: '3002',
+               confirmPin: '3002'
+        }
+
+        //Act
+        const result = validateSignUpForm(formData)
+
+
+         //Assert
+
+        expect(result.valid).toBe(false)
+
+        expect(result.errors.phoneNumber).toBe('Phone number must start with +254')
+
+    });
 
 
     
